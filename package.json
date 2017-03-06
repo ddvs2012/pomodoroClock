@@ -1,15 +1,15 @@
 {
-  "name": "new_project",
+  "name": "pomodoro",
   "version": "0.0.1",
-  "description": "new_project",
+  "description": "A pomodoro style timer for productivity",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/ddvs2012/pomodoroClock"
   },
   "author": "Danny Alexander",
   "devDependencies": {
     "gulp": "^3.8.11",
-    "gulp-jshint": "^1.9.0",
+    "gulp-jshint": "^1.12.0",
     "gulp-ruby-sass": "^1.0.5",
     "gulp-sourcemaps": "^1.5.2",
     "gulp-webserver": "^0.9.1"

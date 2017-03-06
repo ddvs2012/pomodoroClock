@@ -1,6 +1,12 @@
 // Load Fonts
 
-@import url(http://fonts.googleapis.com/css?family=Roboto+Slab|Merriweather|Josefin+Slab|Oswald|Bree+Serif|Raleway);
+@import url(http://fonts.googleapis.com/css?family=Roboto+Slab|Merriweather|Josefin+Slab|Josefin+Sans|Oswald|Bree+Serif|Raleway);
+@import url(../../builds/pomodoro/media/fonts/anonymous-pro/AnonymousPro-Regular.ttf);
+
+@font-face {
+    font-family: "Anonymous";
+    src: url(../../builds/pomodoro/media/fonts/anonymous/Anonymous.ttf);
+}
 
 $offwhite:    #EEE8D6;
 $darkblue:    #022933;
@@ -17,7 +23,7 @@ $color-backgrounds: $offwhite;
 $color-headlines: $red;
 
 
-$font-main: "Josefin Slab", Helvetica, sans-serif;
+$font-main: "Josefin Sans", Helvetica, sans-serif;
 $font-highlight: 'Bree Serif', Helvetica, sans-serif;
 
 //breakpoints
