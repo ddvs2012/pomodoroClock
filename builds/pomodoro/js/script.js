@@ -1,7 +1,10 @@
 var interval;
-var clicked = true;
+var started = false;
+var clicked = true; //to differentiate when timer is counting down vs paused
 var display = document.querySelector('#timer');
-var breakTime = false;
+var globalMin, globalSec;
+
+var count = 0;
 
 var inputWorkMinutes = document.querySelector('#workMinutes').textContent;
 var inputBreakMinutes = document.querySelector('#breakMinutes').textContent;
@@ -11,30 +14,37 @@ display.textContent = inputWorkMinutes + ":00";
 
 //set work and break minutes
 function incWM(){	
-	function addWM() {
+	if (inputWorkMinutes < 99) {
 		inputWorkMinutes = parseInt(inputWorkMinutes, 10) + 1; //doesnt inc.
-		display.textContent = inputWorkMinutes + ":00";	
-		$('#workMinutes').text(inputWorkMinutes);
+		if(inputWorkMinutes < 10){
+			display.textContent = '0' + inputWorkMinutes + ":00";	
+			$('#workMinutes').text(inputWorkMinutes);
+		} else {
+			display.textContent = inputWorkMinutes + ":00";	
+			$('#workMinutes').text(inputWorkMinutes);
+		}
 	}
-
-	addWM();
 }
 
 function decWM(){
-
-	if(inputWorkMinutes > 1) {
-
-		inputWorkMinutes = parseInt(inputWorkMinutes, 10) - 1;
-		display.textContent = inputWorkMinutes + ":00";
-		$('#workMinutes').text(inputWorkMinutes);
-
+	if (inputWorkMinutes > 1) {
+		inputWorkMinutes = parseInt(inputWorkMinutes, 10) - 1; //doesnt inc.
+		if(inputWorkMinutes < 10){
+			display.textContent = '0' + inputWorkMinutes + ":00";	
+			$('#workMinutes').text(inputWorkMinutes);
+		} else {
+			display.textContent = inputWorkMinutes + ":00";	
+			$('#workMinutes').text(inputWorkMinutes);
+		}
 	}
 }
 ////////////////////
 function incBM(){
-	inputBreakMinutes = parseInt(inputBreakMinutes, 10) + 1;
-	// display.textContent = inputWorkMinutes + ":00";	
-	$('#breakMinutes').text(inputBreakMinutes);
+	if (inputBreakMinutes < 99) {
+		inputBreakMinutes = parseInt(inputBreakMinutes, 10) + 1;
+		// display.textContent = inputWorkMinutes + ":0	0";	
+		$('#breakMinutes').text(inputBreakMinutes);
+	}
 }
 function decBM(){
 	if(inputBreakMinutes > 1) {
@@ -63,7 +73,7 @@ function decBM(){
 // 	console.log(mouseHold);
 // });
 
-function setTimer(duration, display){ //time in minutes, where to display
+function setTimerWork(duration, display){ //time in minutes, where to display
 	var timer = duration, minutes, seconds;
 	interval = setInterval(function() {
 		
@@ -71,45 +81,70 @@ function setTimer(duration, display){ //time in minutes, where to display
 		seconds = parseInt(timer % 60, 10);
 
 		// minutes = minutes < 10 ? '0' + minutes : minutes;
+
 		seconds = seconds < 10 ? '0' + seconds : seconds;
+		minutes = minutes < 10 ? '0' + minutes : minutes;
 
 		display.textContent = minutes + ":" + seconds;
 		
 		if (--timer < 0) {
             ring.play();
             clearInterval(interval);
-            setTimer(switch1[0], display);
+			setTimerBreak(inputBreakMinutes*60, display);
         }
         tick.play();
 
 	}, 1000)
 }
 
-if (breakTime === true) {
-	
+function setTimerBreak(duration, display){ //time in minutes, where to display
+	var timer = duration, minutes, seconds;
+	interval = setInterval(function() {
+		
+		minutes = parseInt(timer / 60, 10);
+		seconds = parseInt(timer % 60, 10);
+
+		// minutes = minutes < 10 ? '0' + minutes : minutes;
+
+		seconds = seconds < 10 ? '0' + seconds : seconds;
+		minutes = minutes < 10 ? '0' + minutes : minutes;
+
+		display.textContent = minutes + ":" + seconds;
+		
+		if (--timer < 0) {
+            breakOver.play();
+            clearInterval(interval);
+			setTimerWork(inputWorkMinutes*60, display);
+        }
+        breakTick.play();
+
+	}, 1000)
 }
 
+
 function startStop(){
-	if (breakTime === false) {	
-		if (clicked === true) {
-			setTimer(inputWorkMinutes*60, display); //reference back 1st arg to save state?
-			clicked = false;
-		} else {
-			clearInterval(interval);
-			clicked = true;
-		}
-	}
-	if (breakTime === true) {
-		if (clicked === true) {
-			setTimer(inputBreakMinutes*60, display); //reference back 1st arg to save state?
-			clicked = false;
-		} else {
-			clearInterval(interval);
-			clicked = true;
-		}
-	}
+	started = true;
 	
+		if (clicked === true) {
+			setTimerWork(inputWorkMinutes*60, display); //reference back 1st arg to save state?
+			clicked = false
+			console.log(clicked);
+		} 
+		else { //if(clicked === false) doesnt work
+			clearInterval(interval);
+//parses first 2 digits as minutes, last 2 as seconds (minus one second so when resume, ticks down one second)
+			inputWorkMinutes = parseInt( ( (($('#timer').text()[0]) + ($('#timer').text()[1]))), 10)  +  parseFloat( ( ((($('#timer').text()[3]) + ($('#timer').text()[4])) /60)-(1/60)), 10); 
+			clicked = true;
+		}
 }
+
+function pause(){
+	clearInterval(interval);
+}
+
+// function resume(){
+// 	inputWorkMinutes = 
+// }
 
 // function countDown() {
 // 	tick.play();
