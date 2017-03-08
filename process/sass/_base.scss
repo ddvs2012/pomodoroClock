@@ -1,45 +1,47 @@
 body {
     font-family: $font-main;
 }
-#header{
-	margin-top: 10rem;
+
+#header {
+    margin-top: 10rem;
 }
+
 div#settings {
     display: flex;
     // flex-direction: ;
     justify-content: center;
     margin-bottom: 0;
-
-    .settingElement{
-     
+    .settingElement {
         h3 {
             text-align: center;
         }
-
-    	.interface{
-    		display: flex;
-    		.interfaceItems {
-    			margin: 0 1rem 0 1rem;
-    		}
-    	}
+        .interface {
+            display: flex;
+            .interfaceItems {
+                margin: 0 1rem 0 1rem;
+            }
+        }
     }
 }
 
-div#clock{
-
-	display:flex;
-	justify-content: center;
-	margin: 1rem;
-	margin-top: 4rem;
-
-	div#timer{
-		width: 20rem;
-		display: flex;
-		justify-content: center;
-		padding: 5rem;
-		font-size: 5rem;
- 		border: $border-main;
-		border-radius: 50px;
-	}
+div#clock {
+    display: flex;
+    justify-content: center;
+    margin: 1rem;
+    margin-top: 4rem;
+    div#timer {
+        width: 20rem;
+        display: flex;
+        justify-content: center;
+        padding: 5rem;
+        font-size: 5rem;
+        border: $border-main;
+        border-radius: 50px;
+    }
 }
 
+@media (max-width: 640px) {
+    #header {
+        margin-top: 3rem;
+    }
+}

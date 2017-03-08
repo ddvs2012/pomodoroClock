@@ -1,3 +1,7 @@
+//known issues: 
+//when break timer counts down, pausing will go back to work timer
+//same issue when changing break minutes during countdown
+
 var interval;
 var started = false;
 var clicked = true; //to differentiate when timer is counting down vs paused
@@ -12,8 +16,19 @@ var switch1 = [inputBreakMinutes*60, inputWorkMinutes*60];
 
 display.textContent = inputWorkMinutes + ":00";
 
+function pause(){
+	clearInterval(interval);
+}
+
 //set work and break minutes
-function incWM(){	
+function incWM(){
+	if ( clicked === false ) {
+		pause();
+		timeLeft = parseInt( ( (($('#timer').text()[0]) + ($('#timer').text()[1]))), 10)  +  parseFloat( ( ((($('#timer').text()[3]) + ($('#timer').text()[4])) /60)-(1/60)), 10);
+		inputWorkMinutes = timeLeft; 
+		clicked = true;
+	}
+
 	if (inputWorkMinutes < 99) {
 		inputWorkMinutes = parseInt(inputWorkMinutes, 10) + 1; //doesnt inc.
 		if(inputWorkMinutes < 10){
@@ -27,6 +42,12 @@ function incWM(){
 }
 
 function decWM(){
+	if ( clicked === false ) {
+		pause();
+		timeLeft = parseInt( ( (($('#timer').text()[0]) + ($('#timer').text()[1]))), 10)  +  parseFloat( ( ((($('#timer').text()[3]) + ($('#timer').text()[4])) /60)-(1/60)), 10);
+			inputWorkMinutes = timeLeft; 
+		clicked = true;
+	}
 	if (inputWorkMinutes > 1) {
 		inputWorkMinutes = parseInt(inputWorkMinutes, 10) - 1; //doesnt inc.
 		if(inputWorkMinutes < 10){
@@ -40,6 +61,12 @@ function decWM(){
 }
 ////////////////////
 function incBM(){
+	if ( clicked === false ) {
+		pause();
+		timeLeft = parseInt( ( (($('#timer').text()[0]) + ($('#timer').text()[1]))), 10)  +  parseFloat( ( ((($('#timer').text()[3]) + ($('#timer').text()[4])) /60)-(1/60)), 10);
+			inputWorkMinutes = timeLeft; 
+		clicked = true;
+	}
 	if (inputBreakMinutes < 99) {
 		inputBreakMinutes = parseInt(inputBreakMinutes, 10) + 1;
 		// display.textContent = inputWorkMinutes + ":0	0";	
@@ -47,6 +74,12 @@ function incBM(){
 	}
 }
 function decBM(){
+	if ( clicked === false ) {
+		pause();
+		timeLeft = parseInt( ( (($('#timer').text()[0]) + ($('#timer').text()[1]))), 10)  +  parseFloat( ( ((($('#timer').text()[3]) + ($('#timer').text()[4])) /60)-(1/60)), 10);
+			inputWorkMinutes = timeLeft; 
+		clicked = true;
+	}
 	if(inputBreakMinutes > 1) {
 		inputBreakMinutes = parseInt(inputBreakMinutes, 10) - 1;
 			// display.textContent = inputWorkMinutes + ":00";
@@ -88,7 +121,7 @@ function setTimerWork(duration, display){ //time in minutes, where to display
 		display.textContent = minutes + ":" + seconds;
 		
 		if (--timer < 0) {
-            ring.play();
+            ring.play(); //broken on mobile?
             clearInterval(interval);
 			setTimerBreak(inputBreakMinutes*60, display);
         }
@@ -112,11 +145,11 @@ function setTimerBreak(duration, display){ //time in minutes, where to display
 		display.textContent = minutes + ":" + seconds;
 		
 		if (--timer < 0) {
-            breakOver.play();
+            breakOver.play(); //broken on mobile?
             clearInterval(interval);
 			setTimerWork(inputWorkMinutes*60, display);
         }
-        breakTick.play();
+        breakTick.play(); //broken on mobile?
 
 	}, 1000)
 }
@@ -133,14 +166,13 @@ function startStop(){
 		else { //if(clicked === false) doesnt work
 			clearInterval(interval);
 //parses first 2 digits as minutes, last 2 as seconds (minus one second so when resume, ticks down one second)
-			inputWorkMinutes = parseInt( ( (($('#timer').text()[0]) + ($('#timer').text()[1]))), 10)  +  parseFloat( ( ((($('#timer').text()[3]) + ($('#timer').text()[4])) /60)-(1/60)), 10); 
+			timeLeft = parseInt( ( (($('#timer').text()[0]) + ($('#timer').text()[1]))), 10)  +  parseFloat( ( ((($('#timer').text()[3]) + ($('#timer').text()[4])) /60)-(1/60)), 10);
+			inputWorkMinutes = timeLeft; 
 			clicked = true;
 		}
 }
 
-function pause(){
-	clearInterval(interval);
-}
+
 
 // function resume(){
 // 	inputWorkMinutes = 
